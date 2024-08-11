@@ -6,11 +6,28 @@ import Header from "../components/Header";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Category from "../components/Category";
 import ProductCard from "../components/ProductCard";
-
+import data from "../Data/Data.json";
 const categories = ["Trending Now", "All", "New", "Mens", "Womens"];
 export default function HomeScreen() {
-  const [selectedCategory, setSelectedCategory] = useState("mens");
-  const[isLiked, setIsLiked] = useState(false);
+  const [products,setProducts]= useState(data.products); 
+  const [selectedCategory, setSelectedCategory] = useState("Mens");
+  //const[isLiked, setIsLiked] = useState(false);
+  const handleLiked = (item) => {
+    const newProducts = products.map ((prod) =>{
+      if(prod.id === item.id){
+        return{
+          ...prod,
+        isLiked: true,
+
+        };
+        
+
+      }
+      return prod;
+
+    });
+    setProducts(newProducts);
+  };
   return (
     <LinearGradient colors={["#FDF0F3", "#FFFBFC"]} style={styles.container}>
       <Header />
@@ -53,11 +70,11 @@ export default function HomeScreen() {
             />
           </>
         }
-        data={[1, 2, 3, 4, 5, 6]}
+        data={products}
         renderItem={({item,index}) => <ProductCard 
         item = {item} 
-        isLiked = {isLiked} 
-        setIsLiked ={setIsLiked}/> }
+        handleLiked ={handleLiked}
+        /> }
         showsVerticalScrollIndicator={false}
       />
       {/*<View style= {{

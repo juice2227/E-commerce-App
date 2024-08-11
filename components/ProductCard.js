@@ -1,24 +1,30 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const ProductCard = ({isLiked, setIsLiked}) => {
+import {useNavigation } from '@react-navigation/native';
+const ProductCard = ({item,handleLiked}) => {
     //const isLiked = true;
     //const[isLiked, setIsLiked] = useState(false);
+    const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    < TouchableOpacity 
+    onPress={() =>{ navigation.navigate ("PRODUCTS_DETAILS", {item});
+
+    }}
+    style={styles.container}>
       
-      <Image source={require("../assets/images/girl.jpeg")} style={styles.coverImage}/>
+      <Image source={{uri: item.image} } style={styles.coverImage}/>
       <View style ={styles.content}>
-      <Text style= {styles.title}>Acrylic Sweater</Text>
-      <Text style= {styles.price}>$45.9</Text>
+      <Text style= {styles.title}>{item.title}</Text>
+      <Text style= {styles.price}>${item.price}</Text>
       </View>
       <TouchableOpacity 
       onPress={() => { 
-        setIsLiked(!isLiked);
+        handleLiked(item);
       } } 
       style={styles.likeContainer}>
         {
-            isLiked ? ( <AntDesign name={'heart'} size={20} color={"#E55B5B"}/>) : 
+            item?.isLiked ? ( <AntDesign name={'heart'} size={20} color={"#E55B5B"}/>) : 
             (
                 <AntDesign name={'hearto'} size={20} color={"#E55B5B"}/>
             )
@@ -27,7 +33,7 @@ const ProductCard = ({isLiked, setIsLiked}) => {
         
 
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   )
 }
 
