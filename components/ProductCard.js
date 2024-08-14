@@ -3,12 +3,11 @@ import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation } from '@react-navigation/native';
 const ProductCard = ({item,handleLiked}) => {
-    //const isLiked = true;
-    //const[isLiked, setIsLiked] = useState(false);
     const navigation = useNavigation();
   return (
     < TouchableOpacity 
-    onPress={() =>{ navigation.navigate ("PRODUCTS_DETAILS", {item});
+    onPress={() =>
+      { navigation.navigate ("PRODUCTS_DETAILS", {item});
 
     }}
     style={styles.container}>

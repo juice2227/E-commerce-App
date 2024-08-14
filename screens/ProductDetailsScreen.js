@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRoute } from "@react-navigation/native";
 import Header from "../components/Header";
 //const imageUrl =
 //"https://res.cloudinary.com/dlc5c1ycl/image/upload/v1710567613///vulb5bckiruhpzt2v8ec.png";
@@ -13,20 +14,24 @@ const colorArray = [
   "#1D752B",
   "#000000",
 ];
+
 const ProductDetailsScreen = () => {
   const imageUrl =
     "https://res.cloudinary.com/dlc5c1ycl/image/upload/v1710567613/vulb5bckiruhpzt2v8ec.png";
-  const [selectedSize, setSelectedSize] = useState(null);
-
+  const [selectedSize, setSelectedSize] = useState("M");
+  const route = useRoute();
+  const item = route.params.item;
+  //console.log(route.params.item);
+  const [selectedColor, setSelectedColor] = useState("#B11D1D");
   return (
     <LinearGradient colors={["#FDF0F3", "#FFFBFC"]} style={styles.container}>
       <View style={styles.headerContainer}>
         <Header />
       </View>
-      <Image source={{ uri: imageUrl }} style={styles.coverImage} />
+      <Image source={{ uri: item.image }} style={styles.coverImage} />
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>wintercoat</Text>
-        <Text style={styles.price}>$65</Text>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.price}>${item.price}</Text>
       </View>
       <Text style={[styles.title, styles.sizeText]}>size</Text>
       <View style={styles.sizeContainer}>
@@ -51,18 +56,29 @@ const ProductDetailsScreen = () => {
         })}
       </View>
       <Text style={[styles.title, styles.colorText]}>Colors</Text>
-      <View style ={styles.colorContainer}>
-        {
-            colorArray.map((item) => {
-                return (
-                  <View></View>  
-                );
-                    
-                
-            })
-        }
-
+      <View style={styles.colorContainer}>
+        {colorArray.map((color) => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedColor(color);
+              }}
+              style={[
+                styles.circleBorder,
+                selectedColor === color && {
+                  borderColor: color,
+                  borderWidth: 1,
+                },
+              ]}
+            >
+              <View style={[styles.circle, { backgroundColor: color }]} />
+            </TouchableOpacity>
+          );
+        })}
       </View>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Add to Cart</Text>
+      </TouchableOpacity>
     </LinearGradient>
   );
 };
@@ -118,5 +134,34 @@ const styles = StyleSheet.create({
   colorText: {
     marginHorizontal: 20,
     marginTop: 10,
+  },
+  circle: {
+    height: 36,
+    width: 36,
+    borderRadius: 20,
+  },
+  colorContainer: {
+    flexDirection: "row",
+    marginHorizontal: 20,
+  },
+  circleBorder: {
+    height: 48,
+    width: 48,
+    marginHorizontal: 5,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    backgroundColor: "#E96E6E",
+    padding: 20,
+    margin: 10,
+    borderRadius: 20,
+  },
+  buttonText: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "white",
+    textAlign: "center",
   },
 });
