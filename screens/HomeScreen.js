@@ -76,14 +76,12 @@ export default function HomeScreen() {
         handleLiked ={handleLiked}
         /> }
         showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle = {{
+          paddingBottom: 150,
+        }}
       />
-      {/*<View style= {{
-          flexDirection: "row"
-          
-        }}>
-          <ProductCard/>
-          <ProductCard/>
-        </View>*/}
+      
     </LinearGradient>
   );
 }

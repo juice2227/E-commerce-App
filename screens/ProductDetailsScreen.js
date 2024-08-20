@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native"; 
 import Header from "../components/Header";
-//const imageUrl =
-//"https://res.cloudinary.com/dlc5c1ycl/image/upload/v1710567613///vulb5bckiruhpzt2v8ec.png";
+import { CartContext } from "../context/CartContext";
+
 const sizes = ["S", "M", "L", "XL"];
 const colorArray = [
   "#91A1B0",
@@ -16,13 +16,20 @@ const colorArray = [
 ];
 
 const ProductDetailsScreen = () => {
-  const imageUrl =
-    "https://res.cloudinary.com/dlc5c1ycl/image/upload/v1710567613/vulb5bckiruhpzt2v8ec.png";
+  const { addToCart } = useContext(CartContext);
+  const navigation = useNavigation();
   const [selectedSize, setSelectedSize] = useState("M");
   const route = useRoute();
   const item = route.params.item;
-  //console.log(route.params.item);
   const [selectedColor, setSelectedColor] = useState("#B11D1D");
+
+  const handleAddToCart = (item) => {
+    item.size = selectedSize;
+    item.color = selectedColor;
+    addToCart(item);
+    navigation.navigate("Cart");
+  };
+
   return (
     <LinearGradient colors={["#FDF0F3", "#FFFBFC"]} style={styles.container}>
       <View style={styles.headerContainer}>
@@ -33,11 +40,12 @@ const ProductDetailsScreen = () => {
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.price}>${item.price}</Text>
       </View>
-      <Text style={[styles.title, styles.sizeText]}>size</Text>
+      <Text style={[styles.title, styles.sizeText]}>Size</Text>
       <View style={styles.sizeContainer}>
-        {sizes.map((size) => {
+        {sizes.map((size, index) => {
           return (
             <TouchableOpacity
+              key={index}
               style={styles.sizeValueContainer}
               onPress={() => {
                 setSelectedSize(size);
@@ -46,7 +54,7 @@ const ProductDetailsScreen = () => {
               <Text
                 style={[
                   styles.sizeValue,
-                  selectedSize == size && { color: "#E55B5B" },
+                  selectedSize === size && { color: "#E55B5B" },
                 ]}
               >
                 {size}
@@ -57,9 +65,10 @@ const ProductDetailsScreen = () => {
       </View>
       <Text style={[styles.title, styles.colorText]}>Colors</Text>
       <View style={styles.colorContainer}>
-        {colorArray.map((color) => {
+        {colorArray.map((color, index) => {
           return (
             <TouchableOpacity
+              key={index}
               onPress={() => {
                 setSelectedColor(color);
               }}
@@ -76,7 +85,12 @@ const ProductDetailsScreen = () => {
           );
         })}
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity 
+        onPress={() => { 
+          handleAddToCart(item);
+        }}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>Add to Cart</Text>
       </TouchableOpacity>
     </LinearGradient>

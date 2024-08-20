@@ -1,17 +1,38 @@
-import { StyleSheet, Text, View,Image } from 'react-native'
+import { StyleSheet, Text, View,Image, TouchableOpacity } from 'react-native'
 import React from 'react'
+import Ionicons from "@expo/vector-icons/Ionicons"
+import {useNavigation} from "@react-navigation/native"
 
-const Header = () => {
+
+const Header = ({isCart}) => {
+    const navigation = useNavigation();
   return (
     <View style ={styles.container}>
-        <View style= {styles.tabcontainer}>
-            <Image source={require("../assets/images/tab.png")} style = {styles.tab}/>
-        </View>
+        <TouchableOpacity
+        onPress={() =>
+            navigation.navigate("HOME_STACK")
+        }
+        style= {styles.tabcontainer}>
+            {
+                isCart? ( <Ionicons name={ "chevron-back-sharp"} color={"#E96E6E"} size={24}/>) 
+                :
+                (
+                    <Image source={require("../assets/images/tab.png")} style = {styles.tab}/>
+
+                )
+
+            }
+            
+        </TouchableOpacity>
+        {
+            isCart && <Text style= {styles.myCart}>My Cart</Text>
+        }
+        
         <Image source={require("../assets/images/profile.jpeg")} style = {styles.profile}/>
       
     </View>
-  )
-}
+  );
+};
 
 export default Header
 
@@ -43,5 +64,9 @@ const styles = StyleSheet.create({
         height: 28,
         width: 28,
 
+    },
+    myCart:{
+       fontSize: 28,
+       color:"black" 
     }
 })
