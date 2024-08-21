@@ -23,7 +23,7 @@ const CartScreen = () => {
         data={carts}
         ListHeaderComponent={<></>}
         renderItem={({ item }) => (
-          <CartCard item={item} deleteFromCart = {deleteItemFromCart} />
+          <CartCard item={item} deleteItemFromCart={deleteItemFromCart} />
         )}
         ListFooterComponent={
           <>

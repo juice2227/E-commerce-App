@@ -20,7 +20,7 @@ const CartCard = ({item, deleteItemFromCart}) => {
       
       </View>
       <TouchableOpacity onPress={() => {
-        deleteItemFromCart(item);
+        deleteItemFromCart(item)
       }}>
       <FontAwesome6 name ={"trash"} color={"#F68CB5"} size={22}/>
       </TouchableOpacity>
